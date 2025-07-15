@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Selamat Ulang Tahun 🎉</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background: linear-gradient(to right, #ffe0e9, #fad0c4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
+    }
+
+    #particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+
+    .card {
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      max-width: 500px;
+      width: 90%;
+      position: relative;
+      z-index: 1;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    .sticker {
+      width: 150px;
+      margin-bottom: 20px;
+      animation: bounce 2s infinite;
+    }
+
+    .message {
+      font-size: 1.4rem;
+      margin-bottom: 30px;
+      min-height: 80px;
+      transition: opacity 0.5s;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #ff4081;
+      color: white;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background 0.3s ease;
+      flex: 1;
+    }
+
+    button:hover:enabled {
+      background-color: #e91e63;
+    }
+
+    button:disabled {
+      background-color: #ffc1d6;
+      cursor: not-allowed;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    @keyframes bounce {
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="particles"></canvas>
+  <div class="card">
+    <audio id="bg-music" autoplay loop>
+      <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg" />
+      Browser tidak mendukung audio.
+    </audio>
+    <img
+      class="sticker"
+      id="sticker"
+      src="https://media.giphy.com/media/3ohzdIuqJoo8QdKlnW/giphy.gif"
+      alt="Stiker Ulang Tahun"
+    />
+    <div class="message" id="message">Haiii 🎈</div>
+    <div class="buttons">
+      <button id="backBtn" onclick="backSlide()">⬅️ Kembali</button>
+      <button id="nextBtn" onclick="nextSlide()">Lanjut ➡️</button>
+    </div>
+  </div>
+
+  <script>
+    const messages = [
+      "Halo Taaaa",
+      "Cuma ngetes aja bisa apa engga hihihhii",
+      "Ultah lu kapan dah? Desember kah??",
+      "Klo iya HBD CUY AWOKWKWKWWKK! 🎉",
+      "HIHIHIHIHIHHIHHIIHHII💖",
+      "IKAN KAKAP IKAN TERI ✨",
+      "Gatau ngapain lagi 🙏",
+      "Selamat ulang tahunnn! 🎂🎁",
+      "✨ Dengan cinta dari lubuk lubububub dari aku buat kamu 💌",
+      "🎉 Makasih udah baca sampe abis awokwkkw! 🎉",
+    ];
+
+    const stickers = [
+      "https://media.giphy.com/media/LML5ldpTKLPelFtBfY/giphy.gif",
+      "https://media.giphy.com/media/kfZfVqxRQ39Bu/giphy.gif",
+      "https://media.giphy.com/media/f4V2mqvv0wT9m/giphy.gif",
+      "https://media.giphy.com/media/SVs0cQ0nLRsLNUadmn/giphy.gif",
+      "https://media.giphy.com/media/9tfNjaoyJv7Gw/giphy.gif",
+      "https://media.giphy.com/media/ZBK7b4vHYyb0n70zJq/giphy.gif",
+      "https://media.giphy.com/media/Um3ljJl8jrnHy/giphy.gif",
+      "https://media.giphy.com/media/gtakVlnStZUbe/giphy.gif",
+      "https://media.giphy.com/media/13uxqoROqopjy/giphy.gif",
+      "https://media.giphy.com/media/3o7btRkeE7RtAq8DnO/giphy.gif",
+    ];
+
+    let index = 0;
+
+    const msgElem = document.getElementById("message");
+    const stickerElem = document.getElementById("sticker");
+    const backBtn = document.getElementById("backBtn");
+    const nextBtn = document.getElementById("nextBtn");
+
+    function updateSlide() {
+      msgElem.textContent = messages[index];
+      stickerElem.src = stickers[index % stickers.length];
+      backBtn.disabled = index === 0;
+      nextBtn.disabled = index === messages.length - 1;
+    }
+    function nextSlide() {
+      if (index < messages.length - 1) {
+        index++;
+        updateSlide();
+      }
+    }
+
+    function backSlide() {
+      if (index > 0) {
+        index--;
+        updateSlide();
+      }
+    }
+
+    updateSlide(); // initial setup
+  </script>
+  <script>
+    const canvas = document.getElementById("particles");
+    const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const confettiCount = 150;
+    const confetti = [];
+
+    for (let i = 0; i < confettiCount; i++) {
+      confetti.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 6 + 4,
+        d: Math.random() * confettiCount,
+        color: `hsl(${Math.random() * 360}, 70%, 60%)`,
+        tilt: Math.floor(Math.random() * 10) - 10,
+        tiltAngle: 0,
+        tiltAngleIncremental: Math.random() * 0.07 + 0.05,
+      });
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      confetti.forEach((c) => {
+        ctx.beginPath();
+        ctx.lineWidth = c.r / 2;
+        ctx.strokeStyle = c.color;
+        ctx.moveTo(c.x + c.tilt + c.r / 4, c.y);
+        ctx.lineTo(c.x + c.tilt, c.y + c.tilt + c.r / 4);
+        ctx.stroke();
+      });
+      update();
+    }
+
+    function update() {
+      confetti.forEach((c) => {
+        c.tiltAngle += c.tiltAngleIncremental;
+        c.y += (Math.cos(c.d) + 1 + c.r / 2) / 2;
+        c.tilt = Math.sin(c.tiltAngle) * 15;
+
+        if (c.y > canvas.height) {
+          c.x = Math.random() * canvas.width;
+          c.y = -10;
+        }
+      });
+    }
+
+    function animate() {
+      requestAnimationFrame(animate);
+      draw();
+    }
+
+    animate();
+    window.addEventListener("resize", () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+  </script>
+</body>
+</html>
